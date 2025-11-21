@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Subscription System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; }
+        .service-status { padding: 8px 12px; border-radius: 5px; margin: 2px; font-size: 14px; }
+        .service-online { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .service-offline { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .card { margin-bottom: 15px; border: 1px solid #dee2e6; }
+        .price-display { font-size: 18px; font-weight: bold; color: #28a745; }
+        .loading { text-align: center; padding: 20px; color: #6c757d; }
+        .data-item { padding: 10px; border-bottom: 1px solid #eee; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-primary">
+        <div class="container">
+            <span class="navbar-brand">🏥 Medical Subscription System</span>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Service Status -->
+        <div class="card">
+            <div class="card-body">
+                <h5>Microservices Status</h5>
+                <div id="serviceStatus" class="d-flex flex-wrap"></div>
+            </div>
+        </div>
+
+        <!-- Create Subscription -->
+        <div class="card">
+            <div class="card-body">
+                <h5>Create New Subscription</h5>
+                <form id="subscriptionForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Doctor</label>
+                                <select class="form-select" id="doctorSelect" required>
+                                    <option value="">Loading doctors...</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Plan</label>
+                                <select class="form-select" id="planSelect" required onchange="updatePlanPrice()">
+                                    <option value="">Loading plans...</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Coupon</label>
+                                <select class="form-select" id="couponSelect" required onchange="applyCoupon()">
+                                    <option value="">Loading coupons...</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Agent</label>
+                                <select class="form-select" id="agentSelect" required>
+                                    <option value="">Loading agents...</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Plan Price ($)</label>
+                                <input type="number" class="form-control" id="planPrice" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Discount Amount ($)</label>
+                                <input type="number" class="form-control" id="discountAmount" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Final Amount ($)</label>
+                                <input type="number" class="form-control" id="finalAmount" readonly>
+                                <div id="priceBreakdown" class="mt-2 small text-muted"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Invoice Number</label>
+                                <input type="text" class="form-control" id="invoiceNumber" readonly>
+                                <small class="text-muted">Auto-generated</small>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success">Create Subscription</button>
+                </form>
+                <div id="subscriptionResult" class="mt-3"></div>
+            </div>
+        </div>
+
+        <!-- Data Tables -->
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5>Doctors</h5>
+                        <button class="btn btn-sm btn-primary mb-2" onclick="loadDoctors()">Refresh</button>
+                        <div id="doctorsList" style="max-height: 300px; overflow-y: auto;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5>Plans</h5>
+                        <button class="btn btn-sm btn-primary mb-2" onclick="loadPlans()">Refresh</button>
+                        <div id="plansList" style="max-height: 300px; overflow-y: auto;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5>Invoices</h5>
+                        <button class="btn btn-sm btn-primary mb-2" onclick="loadInvoices()">Refresh</button>
+                        <div id="invoicesList" style="max-height: 300px; overflow-y: auto;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
